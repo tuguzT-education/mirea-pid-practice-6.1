@@ -2,10 +2,12 @@ package io.github.tuguzt.uielements
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import io.github.tuguzt.uielements.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private val viewModel: MainActivityModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -13,6 +15,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.run {
+            viewModel.text.observe(this@MainActivity) {
+                textView.text = it
+            }
+
             button.setOnClickListener {
                 val editText = editText.text
                 val checkBox = if (checkBox.isChecked) "ON" else "OFF"
@@ -28,7 +34,7 @@ class MainActivity : AppCompatActivity() {
                     ToggleButton: $toggleButton
                     RadioGroup: $radioGroup
                 """.trimIndent()
-                textView.text = text
+                viewModel.setText(text)
             }
         }
     }
